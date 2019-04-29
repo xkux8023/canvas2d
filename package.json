@@ -1,0 +1,16 @@
+{
+  "name": "helloworld",
+  "version": "1.0.0",
+  "main": "main.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "lite-server"
+  },
+  "devDependencies": {
+    "lite-server": "^2.4.0"
+  },
+  "dependencies": {
+    "systemjs": "0.19.47",
+    "typescript": "^3.4.5"
+  }
+}
