@@ -11,7 +11,7 @@ export interface IDoom3Tokenizer {
   reset(): void                                 // 重置当前索引为0
   getNextToken(token: IDoom3Token): boolean     // 获取下一个Token
 }
-export interface Doom3Factory {}
+export interface Doom3Factory { }
 export enum ETokenType {
   NONE,       // 0 default情况下, enum定义的枚举值是以 0开始的数字类型
   STRING,     // 1 表示字符串类型
@@ -79,19 +79,19 @@ class Doom3Token implements IDoom3Token {
 
 class Doom3Tokenizer implements IDoom3Tokenizer {
   // 使用了初始化表达式方式初始化字符串数组
-  private _digits: string[] = [ "0" , "1" , "2" , "3" , "4" , "5" , "6" , "7" , "8" , "9" ]
-  private _whiteSpaces: string[] = [ " " , "\t" , "\v" , "\n" ]
+  private _digits: string[] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+  private _whiteSpaces: string[] = [" ", "\t", "\v", "\n"]
   private _source: string = "Doom3Tokenizer"
   private _currIdx: number = 0
 
   // 判断某个字符是不是数字
-  private _isDigit(c: string) : boolean {
+  private _isDigit(c: string): boolean {
     for (let i: number = 0; i < this._digits.length; i++) {
       if (c === this._digits[i]) return true
     }
     return false
   }
-  private _isWhitespace(c: string) : boolean {
+  private _isWhitespace(c: string): boolean {
     for (let i: number = 0; i < this._whiteSpaces.length; i++) {
       if (c === this._whiteSpaces[i]) return true
     }
@@ -105,5 +105,33 @@ class Doom3Tokenizer implements IDoom3Tokenizer {
   public reset(): void {
     this._currIdx = 0
   }
-  public getNextToken(token: IDoom3Token): boolean {}
+  public getNextToken(token: IDoom3Token): boolean { }
+
+  /*
+  * 获得当前的索引指向的char, 并且将索引加1, 后移一位
+  * 后++特点是返回当前的索引, 并将索引加1
+  * 这样的话, _getChar返回的是当前要处理的char, 而索引指向的是下一个要处理的char
+  **/
+  private _getChar(): string {
+    // 数组越界检查
+    if (this._currIdx >= 0 && this._currIdx < this._source.length) {
+      return this._source.charAt(this._currIdx++)
+    }
+    return ''
+  }
+
+  // 探测下一个字符是什么
+  private _peekChar(): string {
+    // 数组越界检查
+    if (this._currIdx >= 0 && this._currIdx < this._source.length) {
+      return this._source.charAt(this._currIdx)
+    }
+    return ''
+  }
+  private _ungetChar(): void {
+    //将索引前移1位, 前减操作符
+    if (this._currIdx > 0) {
+      --this._currIdx
+    }
+  }
 }
